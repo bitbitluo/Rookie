@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-type" content="text/html; charset = utf-8">
+<title>HTML5</title>
+<script type="text/javascript" charset = "utf-8"> 
+//这个函数将在页面完全加载后调用 
+function pageLoaded() 
+{ 
+//获取canvas对象的引用,注意tCanvas名字必须和下面body里面的id相同 
+var canvas = document.getElementById('tCanvas'); 
+//获取该canvas的2D绘图环境 
+var context = canvas.getContext('2d'); 
+//获取图片对象的引用 
+var image = document.getElementById('tkjpg'); 
+//在(0,50)处绘制图片 
+context.drawImage(image,0,50); 
+//缩小图片至原来的一半大小 
+ 
+context.fillStyle='#FF0000';
+context.fillRect(150,150,100,100);
+ 
+//var image = new Image();
+//image.src = canvas.toDataURL("image/png");
+var image = document.getElementById('tkjpg2'); 
+image.src = canvas.toDataURL("image/png");
+ 
+document.getElementById("imgs").value=canvas.toDataURL("image/png");
+} 
+</script>
+</head>
+<body onload="pageLoaded();">
+<p></p>
+<img src = "3.jpg" id = "tkjpg" width="300" height="100">
+<p></p>
+<img   id = "tkjpg2">
+<canvas width = "800" height = "500" id = "tCanvas" style = "border:black 1px solid;"> </canvas>
+<form id="formid"  name= "myform" method = 'post'  action = '1.php'  >
+  <input name="img" type="hidden" id="imgs">
+  <input type="submit" name="sub" value="提交"/>
+</form>
+</body>
+</html>

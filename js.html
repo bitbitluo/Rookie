@@ -1,0 +1,23 @@
+<link href="https://cdn.bootcss.com/cropper/4.0.0/cropper.min.css" rel="stylesheet">
+
+<div class="container">
+  <img src="https://fengyuanchen.github.io/cropper/images/picture.jpg">
+</div>
+
+<input type="file" name="file" id="file"/>
+<button>查看</button>
+
+
+
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/cropper/4.0.0/cropper.min.js"></script>
+
+<script type="text/javascript">
+	
+	$(function () {
+    	$("#file").uploadPreview({ Img: "ImgPr", Width: 120, Height: 120 });
+	});
+	
+	
+
+</script>

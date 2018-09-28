@@ -1,0 +1,122 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>登录和注册</title>
+
+	<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="bootstrap.min.css">
+	
+	<style type="text/css">
+		body{
+			background: url(background.jpg);
+			background-position: center center;
+			background-repeat: no-repeat;
+			background-size: cover;
+		}
+	#form{
+		text-align:center;
+		padding-top: 30px;
+		padding-bottom: 30px;
+		margin-top: 8%;
+		background: white;
+		box-shadow: 2px 2px 2px #333333;
+	}
+	button{
+		margin-left: 15px;
+		margin-right: 15px;
+	}
+	.row{
+		padding: 50px;
+	}
+	</style>
+
+</head>
+<body>
+	
+<div class="row">
+  <div class="col-md-4"></div>
+  <div class="col-md-4" id="form">
+	  	<form class="form-inline" method="post" id="myform" action="login.php">
+			<h1>菜鸟博客</h1>
+			<br>
+			<p><b>帐号： <b> <input type="text" class="form-control" name="username" id="username"> <p>
+			<br>
+			<p><b>密码： <b><input type="password" class="form-control" name="password" id="password"> </p>
+			<p name="hint"></p>
+			<br>
+			<div id="button">
+			<button type="button" class="btn btn-default btn-sm dropdown-toggle" id="login">登录</button>
+			<button type="button" class="btn btn-default btn-sm dropdown-toggle" id="regest">注册</button>
+			</div>
+		</form>
+	</div>
+  <div class="col-md-4"></div>
+  <div>
+</body>
+<script type="text/javascript">
+$(document).ready(function(){
+
+	$('[name=username]').focus();
+
+  	$("#regest").click(function() {
+  		var username = $("[name=username]").val();
+  		var password = $("[name=password").val();
+  		if(username == ''|| password == ''){
+  			 $("input").val("");
+  			$("[name='hint']").text("用户名和密码不能为空").css("color", "red");
+            return false;
+
+        }
+  		var data = {username: username, password:password};  
+		var htmlobj = $.ajax({
+			type: "POST",
+			url: "regest.php",
+			dataType: "JSON",
+			data: data,
+			async:false
+		});
+  		var rspText = htmlobj.responseText;
+  		if(rspText.indexOf("成功") != -1){
+  			$("[name='hint']").text("创建成功： 请点击登录").css("color", "green");
+  		} else {
+  			 $("input").val("");
+  			$("[name='hint']").text("创建失败： 此用户名已经被占用").css("color", "red");
+  		}
+
+	});
+
+	$("#login").click(function() {
+  		var username = $("[name=username]").val();
+  		var password = $("[name=password]").val();
+  		if(username == ''|| password == ''){
+  			 $("input").val("");
+  			$("[name='hint']").text("用户名和密码不能为空").css("color", "red");
+            return false;
+
+        }
+  		var data = {username: username, password:password};  
+		var htmlobj = $.ajax({
+			type: "POST",
+			url: "login.php",
+			dataType: "JSON",
+			data: data,
+			async:false
+		});
+  		var rspText = htmlobj.responseText;
+  		if(rspText.indexOf("成功") != -1){
+  			window.location.href="/";
+  		} else {
+  			$("[name=password").val("");
+  			$("[name='hint']").text("登录失败： 账号或者密码不正确").css("color", "red");
+  		}
+
+	});
+});
+</script>
+</html>
+
+
+
+
+
+
