@@ -145,7 +145,9 @@
 
 <body>
 
-<?php include("../navbar.php") ?>
+<?php include("../navbar.php");
+      include("getInfo.php");
+ ?>
 
 
 <div class="col-lg-2 col-md-1"></div>
@@ -156,13 +158,13 @@
     <div class="avatar-bg">
   
     
-      <img src=<?php echo '/img/avatar/'.$_SESSION['cur_user'].'.jpg' ?> class="avatar img-circle  center-block " data-target="#changeModal" data-toggle="modal">
+      <img src=<?php echo $user['avatar']; ?> class="avatar img-circle  center-block " data-target="#changeModal" data-toggle="modal">
    
     </div>
 
     <div class="text-center" >
-      <h3>一笑奈何</h3><br>
-      <p><span>个性签名:</span> Never Settle<p> 
+      <h3><?php echo $user['username']; ?></h3><br>
+      <p><span>个性签名:</span> <?php echo $user['sign']; ?><p> 
       <p class="left"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>&emsp;编辑</p>
   
     </div>
@@ -206,15 +208,19 @@
   <ul>
     <h2>我的博客</h2>
     <div class="line"><br>
-    <?php for($i=1; $i <> 100; $i+=1){ ?>
-    <li class="item" >
-        <p>写作</p>
-        <a><span>聊聊东野圭吾</span>
-        <time style="position: absolute; right: 3%">2018-07-19</time>  
-        <div class="line"></div>
-    </a></li>
-    <?php } ?>
+    <?php while ( $myblog = ($myblogs-> fetch_assoc())) { ?>
 
+          <li class="item" >
+            <p>写作</p>
+            <a href= <?php echo "/blog/?page=".$myblog["id"]?> >
+
+            <span><?php echo $myblog['title']; ?></span>
+            <time style="position: absolute; right: 3%"><?php echo $myblog['date']; ?></time>  
+            <div class="line"></div>
+        </a></li>
+
+    <?php } ?>
+  
 
   </ul>
 
@@ -295,6 +301,7 @@
         var blobURL;
 
         $modal.on('shown.bs.modal', function () {
+            
             //图片处理
             $image.cropper( $.extend(options, {
                 ready: function () {
@@ -346,7 +353,7 @@
         } else {
             $inputImage.prop('disabled', true).addClass('disabled');
         }
-    }
+  }
 
     var sendPhoto = function(){
 

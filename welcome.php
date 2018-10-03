@@ -76,12 +76,12 @@
 		<div class="thumbnail">
 
 		    <div class="avatar-bg">
-		      <img src="img/avatar/5.jpg" class="avatar img-circle  center-block " id="avatar">
+		      <img src="/img/avatar/5.jpg" class="avatar img-circle  center-block " id="avatar">
 		   
 		    </div>
 
 		    <div class="text-center" >
-		      <h3>一笑奈何</h3><br>
+		      <h3>1</h3><br>
 
 		      <div class="row">
 
@@ -117,20 +117,19 @@
 		    <input type="text" id="sign" class="form-control">
 		  </div>
 
-		  <label>头像</label>
+		  <label>头像(你还可以在个人中心上传)</label>
 		  <div>
-		  	<img class="avatar-show img-circle" src="img/avatar/1.jpg">
-		  	<img class="avatar-show img-circle" src="img/avatar/2.jpg">
-		  	<img class="avatar-show img-circle" src="img/avatar/3.jpg">
+		  	<img class="avatar-show img-circle" src="/img/avatar/1.jpg">
+		  	<img class="avatar-show img-circle" src="/img/avatar/2.jpg">
+		  	<img class="avatar-show img-circle" src="/img/avatar/3.jpg">
 		  </div>
 
 		  <div>
-		  	<img class="avatar-show img-circle" src="img/avatar/4.jpg">
-		  	<img class="avatar-show img-circle" src="img/avatar/5.jpg">
-		  	<img class="avatar-show img-circle" src="img/avatar/6.jpg">
+		  	<img class="avatar-show img-circle" src="/img/avatar/4.jpg">
+		  	<img class="avatar-show img-circle" src="/img/avatar/5.jpg">
+		  	<img class="avatar-show img-circle" src="/img/avatar/6.jpg">
 		  </div><br>
-		  <button type="submit" class="btn btn-default" data-target="#changeModal" data-toggle="modal">图片太丑， 我要自己上传</button>
-		  <button type="submit" class="btn btn-default">我选好啦！</button>
+		  <button id="change" class="btn btn-default">我选好啦！</button>
 
 	</div>
 
@@ -191,115 +190,13 @@
  
 <script type="text/javascript">
 
-	var initCropperInModal = function(img, input, modal){
-
-        var $image = img;
-        //input是下面红色按钮的打开图片
-        var $inputImage = input;
-        var $modal = modal;
-        var options = {
-            aspectRatio: 1, // 纵横比
-            viewMode: 2,
-            preview: '.img-preview' // 预览图的class名
-        };
-        // 模态框隐藏后需要保存的数据对象
-        var saveData = {};
-        var URL = window.URL || window.webkitURL;
-        var blobURL;
-
-        $modal.on('shown.bs.modal', function () {
-            //图片处理
-            $image.cropper( $.extend(options, {
-                ready: function () {
-                    // 当剪切界面就绪后，恢复数据
-                    if(saveData.canvasData){
-                        $image.cropper('setCanvasData', saveData.canvasData);
-                        $image.cropper('setCropBoxData', saveData.cropBoxData);
-                    }
-                }
-            }));
-        }).on( 'hidden.bs.modal', function () {
-            // 保存相关数据
-            saveData.cropBoxData = $image.cropper('getCropBoxData');
-            saveData.canvasData = $image.cropper('getCanvasData');
-            // 销毁并将图片保存在img标签
-            $image.cropper('destroy').attr('src',blobURL);
-        } );
-
-        if ( URL ) {
-            $inputImage.change( function() {
-                var files = this.files;
-                var file;
-                if (!$image.data('cropper')) {
-                    return;
-                }
-                if (files && files.length) {
-                    file = files[0];
-                    if (/^image\/\w+$/.test(file.type)) {
-    
-                        if(blobURL) {
-                            URL.revokeObjectURL(blobURL);
-                        }
-                        blobURL = URL.createObjectURL(file);
-    
-                        // 重置cropper，将图像替换
-                        $image.cropper('reset').cropper('replace', blobURL);
-    
-                        // 选择文件后，显示和隐藏相关内容
-                        $('.img-container').removeClass('hidden');
-                        $('.img-preview-box').removeClass('hidden');
-                        $('#changeModal .disabled').removeAttr('disabled').removeClass('disabled');
-                        $('#changeModal .tip-info').addClass('hidden');
-    
-                    } else {
-                        window.alert('请选择一个图像文件！');
-                    }
-                }
-            });
-        } else {
-            $inputImage.prop('disabled', true).addClass('disabled');
-        }
-    }
-
-    var sendPhoto = function(){
-
-        $('#photo').cropper('getCroppedCanvas',{
-            width:300,
-            height:300
-        }).toBlob(function(blob){
-            // 转化为blob后更改src属性，隐藏模态框
-            
-            
-            var formData=new FormData();
-            formData.append('file', blob);
-            var result = $.ajax({
-                method:"post",
-                url: "update.php", //用于文件上传的服务器端请求地址
-                data: formData,
-                processData: false,
-                contentType: false,
-                async:false
-            });
-
-            alert(result.responseText);
-
-
-
-
-            $('#changeModal').modal('hide');
-        });
-    }
-
-    
- 
 	$(function(){
-		initCropperInModal( $('#photo'), $('#photoInput'), $('#changeModal') );
-
+		
 		$('.avatar-show').click(function(){
 			var $srcvalue = $(this).attr("src");
 			$("#avatar").attr("src", $srcvalue);
 		})	
-		$("#sign").keydown(function(){ 
+		$("#sign").change(function(){ 
 			var $text = $(this).val();
 			if($text != "")
 				$("#my-sign").text($text);
@@ -315,6 +212,24 @@
 		})
 
 	})
+
+    $("#change").click(function() {
+        var email = $("#email").val();
+        var sign = $("#sign").val();
+        var avatar = $("#avatar").attr("src");
+
+        var data = {email:email, sign:sign, avatar:avatar};  
+        var htmlobj = $.ajax({
+            type: "POST",
+            url: "set.php",
+            dataType: "JSON",
+            data: data,
+            async:false
+        });
+        var rspText = htmlobj.responseText;
+        alert(rspText);
+        location.href="/"
+    });
 
 
 

@@ -53,19 +53,39 @@
   <div class="col-md-2"></div>
   <div class="col-md-8 page">
 
-      <h1><b id="title">最新150本IT程序类经典书籍<b></h1>
+      <h1><b id="title"><?php echo $result["title"]; ?><b></h1>
 
-      <div id="author-info">
-          <img id="author-avatar" class="img-circle" src=<?php echo '/img/avatar/' . $_SESSION['cur_user'] . '.jpg' ?> ></img>
-          <div id="author-right">
-            作者：一笑奈何 时间：2015-6-6 &emsp; <button type="button" class="btn btn-default">
-              <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>关注</button> 
+
+      <?php if ( isset($_SESSION['cur_user']) and $_SESSION['cur_user']==$result["author"]){ ?>
+        <div id="author-info">
+              <img id="author-avatar" class="img-circle" src=<?php echo $user['avatar']; ?>>
+                
+              </img>
+              <div id="author-right">
+                  时间：<?php echo $result["date"]; ?> &emsp; <button type="button" class="btn btn-default">
+                  <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>修改</button> 
+              </div>
           </div>
-      </div>
+            
+      <?php }else{?>
+
+        <div id="author-info">
+              <img id="author-avatar" class="img-circle" src=<?php echo $user['avatar']; ?>></img>
+              <div id="author-right">
+                作者：<?php echo $result["author"]; ?> 时间：<?php echo $result["date"]; ?> &emsp; <button type="button" class="btn btn-default">
+                  <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>关注</button> 
+              </div>
+          </div>
+      
+      <?php } ?>
+      
 
       <div id="#blog">
-          <?php echo $row['blog'] ?>
+          <?php echo $result["blog"]; ?>
       </div>
+
+
+      <div style="margin:200px" />
 
 <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>

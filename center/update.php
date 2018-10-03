@@ -4,6 +4,8 @@
 session_start();
 $allowedExts = array("gif", "jpeg", "jpg", "png");
 $temp = explode(".", $_FILES["file"]["name"]);
+
+
 $extension = end($temp);     
 if ( 1 ){
     if ($_FILES["file"]["error"] > 0)

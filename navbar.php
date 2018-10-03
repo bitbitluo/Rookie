@@ -19,18 +19,18 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">菜鸟博客</a>
+      <a class="navbar-brand" href="/"><img src="/logo2.png" height="100%"  /></a>
     </div>
 
     <!-- 控制用户登录 -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
       </ul>
-      <form class="navbar-form navbar-left">
-        <div class="form-group">
-          <input type="text" class="form-control" placeholder="输入搜索的文章">
+      <form class="navbar-form navbar-left" method="GET" action="/search/">
+        <div class="form-group" >
+          <input type="text" class="form-control" placeholder="输入搜索的文章" name="keyword">
         </div>
-        <button type="submit" class="btn btn-default">搜索</button>
+        <button type="submit" class="btn btn-default" id="search">搜索</button>
       </form>
 
       <?php
@@ -42,11 +42,19 @@
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">个人中心 <span class="caret"></span></a>
               <ul class="dropdown-menu">
-                <li><a href="/editor/md/">发布博客</a></li>
-                <li><a href="center/mine.php">我的博客</a></li>
-                <li><a href="#">设置</a></li>
+                <li><a href="/blog/editor/md/">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                &emsp;发布博客</a></li>
+                <li><a href="/center/mine.php">
+                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                &emsp;我的博客</a></li>
+                <li><a href="welcome.php">
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                &emsp;设置</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a href="loginweb/logout.php">退出</a></li>
+                <li ><a href="/loginweb/logout.php" style="color:red">
+                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                &emsp;退出</a></li>
               </ul>
             </li>
           </ul>';
@@ -60,3 +68,8 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+
+<script type="text/javascript">
+  
+
+</script>

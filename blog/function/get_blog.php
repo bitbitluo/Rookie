@@ -2,10 +2,20 @@
 
 include("../connect.php");
 
-$sql = 'SELECT * FROM blogs WHERE title = "1" ';
+$page = $_GET["page"];
 
-$result = $conn->query($sql);
+$sql = "SELECT * FROM blogs WHERE id = '$page' ";
 
-$row = $result->fetch_array(MYSQLI_ASSOC);
+$result = $conn->query($sql)->fetch_assoc();
+
+$author = $result['author']; 
+
+$sql = "SELECT * FROM users WHERE username = '$author' ";
+
+$user = $conn->query($sql)->fetch_assoc();
+
+
+
+?>
 
 

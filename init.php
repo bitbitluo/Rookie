@@ -25,7 +25,9 @@ $sql = "CREATE TABLE users(
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 username VARCHAR(30) NOT NULL,
 password VARCHAR(30) NOT NULL,
-sign VARCHAR(30) NOT NULL
+sign VARCHAR(30) NOT NULL,
+email VARCHAR(30) NOT NULL,
+avatar VARCHAR(30) NOT NULL
 )";
 $conn->query($sql) or die("创建users表失败:<br>$conn->error");
 echo "创建users表<br>";
@@ -37,10 +39,11 @@ $sql = "CREATE TABLE blogs(
 id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 author VARCHAR(30) NOT NULL,
 title VARCHAR(30) NOT NULL,
-photo VARCHAR(30) NOT NULL,
+photo VARCHAR(50) NOT NULL,
 love INT(6) UNSIGNED,
 blog TEXT NOT NULL,
-edit_time VARCHAR(15) NOT NULL
+sub VARCHAR(30) NOT NULL,
+date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 )";
 $conn->query($sql) or die("创建blogs表失败:<br>$conn->error");
 echo "创建blogs表<br>";

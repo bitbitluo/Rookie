@@ -60,7 +60,29 @@
 </head>
 <body>
 
-<?php include("navbar.php"); ?>
+<?php include("navbar.php");
+  include("/connect.php");
+  if(isset($_SESSION['cur_user'])){
+      $username = $_SESSION['cur_user'];  
+      $sql = "SELECT * FROM users WHERE username='$username' and avatar=''";
+      $test = $conn->query($sql)->fetch_assoc();
+        if($test){
+            echo '
+            <script>
+              location.href="/welcome.php"
+            </script>
+            ';
+        }
+  } 
+  
+  $sql = "SELECT * FROM blogs ORDER BY id DESC LIMIT 5";
+  $blogs = $conn->query($sql);
+  $sql = "SELECT username, sign, avatar FROM users ORDER BY id DESC LIMIT 5";
+  $users = $conn->query($sql);
+   
+?>
+
+
 
 <!-- Place somewhere in the <body> of your page -->
 <div class="row">
@@ -70,17 +92,17 @@
     <div class="flexslider">
       <ul class="slides">
       <li>
-        <img src="/img/slide/2.jpg" />
+        <img src="/img/slide/3.jpg" />
       </li>
       <li>
-        <img src="/img/slide/3.jpg" />
+        <img src="/img/slide/2.jpg" />
       </li>
       <li>
         <img src="/img/slide/4.jpg" />
       </li>
       </ul>
     </div>
-  </div>
+</div>
 
   <div class="col-md-1"></div>
 </div>
@@ -89,74 +111,37 @@
 <div class="col-md-1"></div>
 
 <div class="col-md-7 blog_list">
+
+      <?php while($row = ($blogs->fetch_assoc())) { ?>
       <div class="row blog_item"> 
         <div class="col-sm-8 nopading blog_left">
-          <h4> 震惊，某高校男子居然在实验室干这个</h4>
+          <h4>&ensp; <?php echo substr($row["title"],0,50);?></h4>
           <div class="content">
-            <p>春花秋月何时了？往事知多少。小楼昨夜又东风，故国不堪回首月明中。</p>
-            <p>雕栏玉砌应犹在，只是朱颜改。问君能有几多愁？恰似一江春水向东流。</p>           
+                <br>
+                <div class="struct-blog">
+                    <?php echo $row["sub"];?>  
+                </div><br>
+                                      
             <div>
-              <a> 一笑奈何 </a> 
+              <a> <?php echo substr($row["author"],0,10);?> </a> 
               &emsp;
-              <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"> 200</span>
+              <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"> <?php echo substr($row["love"],0,10);?></span>
               &emsp;
-              <span class="glyphicon glyphicon-time" aria-hidden="true"> 2015-5-6</span>
+              <span class="glyphicon glyphicon-time" aria-hidden="true"> <?php 
+                  echo $row["date"];?>
+                    </span> &emsp; <a href=<?php echo "/blog/?page=".$row["id"]?> >查看全文</a>
             </div>
           </div>
         </div>
 
         <div class="col-sm-4 nopading blog_right">
-          <img src="/img/blog/test.jpg" alt="博客图片">
+          <img src=<?php echo $row["photo"] ?> alt="博客图片">
         </div>
 
       </div> 
 
-      <div class="row blog_item"> 
-        <div class="col-sm-8 nopading blog_left">
-          <h4> 震惊，某高校男子居然在实验室干这个</h4>
-          <div class="content">
-            <p>春花秋月何时了？往事知多少。小楼昨夜又东风，故国不堪回首月明中。</p>
-            <p>雕栏玉砌应犹在，只是朱颜改。问君能有几多愁？恰似一江春水向东流。</p>           
-            <div>
-              <a> 一笑奈何 </a> 
-              &emsp;
-              <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"> 200</span>
-              &emsp;
-              <span class="glyphicon glyphicon-time" aria-hidden="true"> 2015-5-6</span>
-            </div>
-          </div>
-        </div>
+      <?php } ?>
 
-        <div class="col-sm-4 nopading blog_right">
-          <img src="/img/blog/test.jpg" alt="博客图片">
-        </div>
-
-      </div> 
-
-
-      <!-- test -->
-
-      <div class="row blog_item"> 
-        <div class="col-sm-8 nopading blog_left">
-          <h4> 震惊，某高校男子居然在实验室干这个</h4>
-          <div class="content">
-            <p>春花秋月何时了？往事知多少。小楼昨夜又东风，故国不堪回首月明中。</p>
-            <p>雕栏玉砌应犹在，只是朱颜改。问君能有几多愁？恰似一江春水向东流。</p>           
-            <div>
-              <a> 一笑奈何 </a> 
-              &emsp;
-              <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"> 200</span>
-              &emsp;
-              <span class="glyphicon glyphicon-time" aria-hidden="true"> 2015-5-6</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-sm-4 nopading blog_right">
-          <img src="/img/blog/test.jpg" alt="博客图片">
-        </div>
-
-      </div> 
 
       <!-- //// -->
 </div>
@@ -166,53 +151,23 @@
   <ul class="media-list">
     <h4>推荐作者</h4>
 
-    <li class="media">
-      <div class="media-left">
-        <a href="#">
-          <img class="media-object avator" src="/img/avator/1.jpg" alt="...">
-        </a>
-      </div>
-      <div class="media-body">
-        <h4 class="media-heading">Media heading</h4>
-        <p>其实我是一名演员，啦啦啦啦听听<p>
-      </div>
-    </li>
+    <?php while($row = ($users->fetch_assoc())) { ?>
 
     <li class="media">
       <div class="media-left">
         <a href="#">
-          <img class="media-object avator" src="/img/avator/1.jpg" alt="...">
+          <img class="media-object avator" src=<?php echo $row["avatar"]?> alt="...">
         </a>
       </div>
       <div class="media-body">
-        <h4 class="media-heading">Media heading</h4>
-        <p>其实我是一名演员，啦啦啦啦听听<p>
+        <h4 class="media-heading"><?php echo $row["username"]?></h4>
+        <p><?php echo $row["sign"]?><p>
       </div>
     </li>
 
-    <li class="media">
-      <div class="media-left">
-        <a href="#">
-          <img class="media-object avator" src="/img/avator/1.jpg" alt="...">
-        </a>
-      </div>
-      <div class="media-body">
-        <h4 class="media-heading">Media heading</h4>
-        <p>其实我是一名演员，啦啦啦啦听听<p>
-      </div>
-    </li>
+    <?php } ?>
 
-    <li class="media">
-      <div class="media-left">
-        <a href="#">
-          <img class="media-object avator" src="/img/avator/1.jpg" alt="...">
-        </a>
-      </div>
-      <div class="media-body">
-        <h4 class="media-heading">Media heading</h4>
-        <p>其实我是一名演员，啦啦啦啦听听<p>
-      </div>
-    </li>
+    
 
   </ul>
 </div>
@@ -225,7 +180,13 @@
 
 
 <script type="text/javascript">
-  $(window).load(function() {
+
+
+
+  $(function() {
+
+   
+
     $('.flexslider').flexslider({
       animation: "slide"
     });
